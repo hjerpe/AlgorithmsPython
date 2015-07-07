@@ -5,7 +5,7 @@ def count_inversions_and_sort(alist):
     '''Sorts the list of integers "alist" and counts the number of inversions. 
     A inversion is defined as i < j | a[i] > a[j].
     Returns a tuple containing (#inversions, [sorted list]).
-    Time complexity: nlog(n).'''
+    Time complexity: O(nlog(n)).'''
     # Base case
     if len(alist) == 1:
         return (0, alist)
