@@ -1,3 +1,4 @@
+from __future__ import division
 import math
 
 def count_inversions_and_sort(alist):
