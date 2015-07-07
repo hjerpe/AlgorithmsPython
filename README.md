@@ -1,1 +1,1 @@
-### Learning algorithms using python
+### Practice algorithms using python
