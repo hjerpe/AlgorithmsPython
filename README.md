@@ -1,1 +1,1 @@
-### Practice algorithms using python
+### Practice algorithms using Python
