@@ -1,12 +1,11 @@
 from __future__ import print_function, division
-import numpy as np
 import math
 # Investigate how the number of comparisons used by quick-sort changes under 
 # different pivoting selection strategies.
 
 def count_comparisons_and_sort(alist, int_piv_strategy):
-    '''Sorts the the input list and outputs the total number of comparisons 
-    using the Quick Sort algorithm.'''
+    '''Sorts the input list and outputs the total number of comparisons using 
+    the Quick-Sort algorithm.'''
     
     def pivot_selection(alist, l_index, r_index, int_piv_strategy):
         '''Returns an index for the input list alist, j used s.t. all numbers 
@@ -17,7 +16,8 @@ def count_comparisons_and_sort(alist, int_piv_strategy):
         elif int_piv_strategy == 2:
             return r_index-1
         elif int_piv_strategy == 3:
-            # Returns the median of the start, middle and end numbers.
+            # Returns the median of the start, middle and end numbers. The 
+            # median of a list of length 2k is defined as index k.
             head = alist[l_index]
             tail = alist[r_index-1]
             len_list = r_index - l_index
@@ -55,9 +55,9 @@ def count_comparisons_and_sort(alist, int_piv_strategy):
         return split_index-1
 
     def recursive_sort(alist, left_index, end_index):
-        '''Recursicely sorts the input list using divide and conquer paradigm 
-        and increments the number of comparisons done by the method partitioning.
-        '''
+        '''Recursicely sorts the input list between the indices 
+        [left_index, end_index) using divide and conquer paradigm and increments 
+        the number of comparisons done by the partitioning method.'''
         if end_index - left_index > 1:
             
             split_index = partitioning(alist, left_index, end_index)
@@ -83,6 +83,7 @@ def count_comparisons_and_sort(alist, int_piv_strategy):
 # filename = 'Data/test_1000.txt'
 # f = open(filename, 'r')
 # li_integers = [int(line.rstrip('\n')) for line in f]
+
 # f.close()
 li_integers =  [ 7, 5, 1, 4, 8, 3, 10, 2, 6, 9 ]
 counts = lambda int_strat: count_comparisons_and_sort(
