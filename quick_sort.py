@@ -34,7 +34,7 @@ def count_comparisons_and_sort(alist, int_piv_strategy):
         around a pivot p such that all numbers to the left of p is smaller and 
         all number to the right are larger. Returns the index to the pivoting
         element.'''
-        int_piv_strategy = piv_strategy[0] # 1 2
+        int_piv_strategy = piv_strategy[0]
         pivot_index = pivot_selection(alist, left_index, end_index, 
                 int_piv_strategy)
         alist[left_index], alist[pivot_index] = \
