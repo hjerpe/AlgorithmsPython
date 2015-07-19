@@ -1,10 +1,12 @@
 from __future__ import print_function, division
 import numpy as np
-# Investigate how the number of comparisons used by quick-sort changes for
-# under different pivoting selection strategies.
+import math
+# Investigate how the number of comparisons used by quick-sort changes under 
+# different pivoting selection strategies.
 
-def quick_sort(alist):
-    '''Sorts the the input list and outputs the total number of comparisons.'''
+def count_comparisons_and_sort(alist, int_piv_strategy):
+    '''Sorts the the input list and outputs the total number of comparisons 
+    using the Quick Sort algorithm.'''
     
     def pivot_selection(alist, l_index, r_index, int_piv_strategy):
         '''Returns an index for the input list alist, j used s.t. all numbers 
@@ -12,13 +14,27 @@ def quick_sort(alist):
         A[j] and all numbers larger than A[j].'''
         if int_piv_strategy == 1:
             return l_index
+        elif int_piv_strategy == 2:
+            return r_index-1
+        elif int_piv_strategy == 3:
+            # Returns the median of the start, middle and end numbers.
+            head = alist[l_index]
+            tail = alist[r_index-1]
+            len_list = r_index - l_index
+
+            mid_index = int(math.floor(len_list/2)) + l_index
+            mid_index += -1 if len_list%2 == 0 else 0
+            mid = alist[mid_index]
+            sorted_indices = [y for x,y in sorted(zip([head, mid, tail], 
+                [l_index, mid_index, r_index-1]))]
+            return sorted_indices[1]
 
     def partitioning(alist, left_index, end_index):
         '''Partitions the input list between the indices left_index, right_index
         around a pivot p such that all numbers to the left of p is smaller and 
         all number to the right are larger. Returns the index to the pivoting
         element.'''
-        int_piv_strategy = 1
+        int_piv_strategy = piv_strategy[0] # 1 2
         pivot_index = pivot_selection(alist, left_index, end_index, 
                 int_piv_strategy)
         alist[left_index], alist[pivot_index] = \
@@ -42,7 +58,7 @@ def quick_sort(alist):
         '''Recursicely sorts the input list using divide and conquer paradigm 
         and increments the number of comparisons done by the method partitioning.
         '''
-        if len(alist) != 1:
+        if end_index - left_index > 1:
             
             split_index = partitioning(alist, left_index, end_index)
             n_comparisons[0] += end_index - (left_index+1)
@@ -55,22 +71,22 @@ def quick_sort(alist):
    
 
     # Sorts the input array and returns the number of comparisons.
+    piv_strategy = [int_piv_strategy]
     n_comparisons = [0]
     if len(alist) == 1: return n_comparisons
     recursive_sort(alist, 0, len(alist))
-
     return n_comparisons[0]
 
-n = 9
-random_list = np.unique(np.random.random_integers(0, 100, n))
-np.random.shuffle(random_list)
-# error_list = [51, 14, 80, 55]
-# error_list = [10, 34, 89, 49, 11, 38, 0, 15, 39]
-org_list = random_list
-# org_list = error_list
-org_list = [8, 10, 1, 9, 7, 2, 6, 3, 5, 4]
-print('org list {l}'.format(l=org_list))
-sorted_list = quick_sort(org_list)
-print('sorted_list: {s}'.format(s=sorted_list))
 
-print('org list after call: {o}'.format(o=org_list))
+# filename = 'Data/test_10.txt'
+# filename = 'Data/test_100.txt'
+# filename = 'Data/test_1000.txt'
+# f = open(filename, 'r')
+# li_integers = [int(line.rstrip('\n')) for line in f]
+# f.close()
+li_integers =  [ 7, 5, 1, 4, 8, 3, 10, 2, 6, 9 ]
+counts = lambda int_strat: count_comparisons_and_sort(
+        [x for x in li_integers], int_strat)
+list_strategies = [1,2,3]
+print(len(li_integers))
+print(map(counts, list_strategies))
