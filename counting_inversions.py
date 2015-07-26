@@ -1,57 +1,48 @@
-from __future__ import division
-import math
+from __future__ import print_function, division
+def merge_sort_and_count_inversions(alist):
+    '''Sorts the input list of integers "alist" and counts the number of 
+    inversions. A inversion is defined as i < j | a[i] > a[j].
+    Returns the number of inversions. Time complexity: O(nlog(n)).'''
 
-def count_inversions_and_sort(alist):
-    '''Sorts the list of integers "alist" and counts the number of inversions. 
-    A inversion is defined as i < j | a[i] > a[j].
-    Returns a tuple containing (#inversions, [sorted list]).
-    Time complexity: O(nlog(n)).'''
-    # Base case
-    if len(alist) == 1:
-        return (0, alist)
-    else:
-        ind_middle = int(math.ceil(len(alist)/2))
+    def merge_and_increment_inversions(aux_list, alist, lo, mid, hi):
+        '''Merge two inputs sorted input lists and increments the number of
+        inversions.'''
+        for i in xrange(lo, hi+1):
+            aux_list[i] = alist[i]
 
-        (count_left, li_left) = count_inversions_and_sort(alist[:ind_middle])
-        (count_right, li_right) = count_inversions_and_sort(alist[ind_middle:])
+        le_ind = lo
+        ri_ind = mid+1
+        for index in xrange(lo, hi+1):
+            if le_ind > mid:
+                alist[index] = aux_list[ri_ind]
+                ri_ind += 1
+            elif ri_ind > hi:
+                alist[index] = aux_list[le_ind]
+                le_ind += 1
 
-        (count_middle, sorted_list) = merge_and_count_inversions(li_left, 
-            li_right)
+            elif aux_list[le_ind] < aux_list[ri_ind]:
+                alist[index] = aux_list[le_ind]
+                le_ind += 1
+            else:
+                alist[index] = aux_list[ri_ind]
+                ri_ind += 1
+                # Found inversion. All elements to the left are also inversions
+                # since the left sub-list is sorted.
+                li_n_inversions[0] += (mid+1) - le_ind
 
-    return (count_left + count_right + count_middle, sorted_list)
-    
+    def _sort(aux_list, alist, lo, hi):
+        '''Divide the list into two halves and recursively sorts and counts
+        the number of inversions in each part. The two halves are merged into
+        one sorted list.'''
+        mid = lo + (hi-lo) // 2
+        if hi <= lo: return None
 
-def merge_and_count_inversions(list1, list2):
-    '''Merge two sorted lists into one sorted list and counts the number of
-    mid inversions. A  mid inversion is defined as i < j | a[i] > a[j]
-    where i is a index in list1 and j is a index in list2.
-    Returns a tuple containing (#mid_inversions, [sorted list]).'''
-    len_op = len(list1) + len(list2)
-    sorted_list = [0 for _ in xrange(len_op)]
-    ind_sorted = 0
-    ind1, ind2 = 0, 0
-    n_inversions = 0
+        _sort(aux_list, alist, lo, mid)
+        _sort(aux_list, alist, mid+1, hi)
+        merge_and_increment_inversions(aux_list, alist, lo, mid, hi)
+   
 
-    while ind_sorted < len_op:
-        if list1[ind1] < list2[ind2]:
-            sorted_list[ind_sorted] = list1[ind1]
-            ind1 += 1
-        else:
-            sorted_list[ind_sorted] = list2[ind2]
-            ind2 += 1
-
-            n_inversions += len(list1) - ind1
-        ind_sorted += 1
-
-        # If smaller list already inserted
-        if ind1 == len(list1):
-
-            for i in xrange(ind2, len(list2)):
-                sorted_list[ind_sorted] = list2[i]
-                ind_sorted += 1
-        elif ind2 == len(list2):
-
-            for i in xrange(ind1, len(list1)):
-                sorted_list[ind_sorted] = list1[i]
-                ind_sorted += 1
-    return (n_inversions, sorted_list)
+    li_n_inversions = [0] # Need scope-reach to sub-methods
+    aux_list = [it for it in alist]
+    _sort(aux_list, alist, 0, len(alist)-1)
+    return li_n_inversions[0]
