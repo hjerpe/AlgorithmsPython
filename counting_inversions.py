@@ -32,8 +32,8 @@ def merge_sort_and_count_inversions(alist):
 
     def _sort(aux_list, alist, lo, hi):
         '''Divide the list into two halves and recursively sorts and counts
-        the number of inversions in each part. The two halves are merged into
-        one sorted list.'''
+        the number of inversions between the two halves. The two halves are 
+        merged into one sorted list.'''
         mid = lo + (hi-lo) // 2
         if hi <= lo: return None
 
