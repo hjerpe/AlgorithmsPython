@@ -17,7 +17,7 @@ def count_comparisons_and_sort(alist, int_piv_strategy):
             return r_index-1
         elif int_piv_strategy == 3:
             # Returns the median of the start, middle and end numbers. The 
-            # median of a list of length 2k is defined as index k.
+            # median of a list of length 2k is defined as the value at index k.
             head = alist[l_index]
             tail = alist[r_index-1]
             len_list = r_index - l_index
